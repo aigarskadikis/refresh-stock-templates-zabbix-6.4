@@ -12,8 +12,6 @@ $api_url !== '' or die('Define api URL. for example http://127.0.0.1/api_jsonrpc
 // check if 3rd argument is specified 
 ($path !== '' && file_exists($path)) or die("Incorrect path $path".PHP_EOL);
 
-echo $path,PHP_EOL;
-
 // define a standart template import API
 $request = json_encode([
     'jsonrpc' => '2.0',
@@ -22,6 +20,7 @@ $request = json_encode([
         'format' => 'yaml',
         'rules' => [
             'template_groups' => ['updateExisting' => true, 'createMissing' => true],
+            'host_groups' => ['updateExisting' => true, 'createMissing' => true],
             'templates' => ['updateExisting' => true, 'createMissing' => true],
             'valueMaps' => ['updateExisting' => true, 'createMissing' => true, 'deleteMissing' => true],
             'templateDashboards' => ['updateExisting' => true, 'createMissing' => true, 'deleteMissing' => true],
@@ -38,6 +37,7 @@ $request = json_encode([
     'id' => (string)time()
 ]);
 
+
 $response = file_get_contents($api_url, false, stream_context_create([
 		'http' => [
 			'method'  => 'POST',
@@ -48,6 +48,8 @@ $response = file_get_contents($api_url, false, stream_context_create([
                         'verify_peer'           => false,
                         'verify_peer_name'      => false
                 ]]));
+
+
 
 $response = json_decode($response, true);
 
